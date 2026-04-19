@@ -17,10 +17,17 @@ DEBUG = True  # Change to False once you are done with runserver testing.
 
 # Uncomment and set to the domain names this site is intended to serve.
 # You must do this once you set DEBUG to False.
-#ALLOWED_HOSTS = ['oj.vnoi.info']
+#ALLOWED_HOSTS = ['k23oj.io.vn']
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://example.com',
+    'https://example.com',
+]
 
 # Optional apps that DMOJ can make use of.
 INSTALLED_APPS += (
+    'discord_integration',
+    'storages',
 )
 
 # Caching. You can use memcached or redis instead.
@@ -125,7 +132,10 @@ SERVER_EMAIL = 'online_judge@k23oj.io.vn'
 STATIC_ROOT = '/tmp/static'
 
 # URL to access static files.
-#STATIC_URL = '/static/'
+STATIC_URL = '/static/'
+
+# Explicitly define compressor root to avoid relying on fallback to STATIC_ROOT.
+COMPRESS_ROOT = STATIC_ROOT
 
 # Uncomment to use hashed filenames with the cache framework.
 #STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
@@ -138,9 +148,9 @@ STATIC_ROOT = '/tmp/static'
 ## DMOJ site display settings.
 SITE_NAME = 'K23OJ'
 SITE_FULL_URL = 'https://k23oj.io.vn'
-SITE_LONG_NAME = 'K23OJ: VNOI Online Judge'
-SITE_ADMIN_EMAIL = 'admin@example.com'
-TERMS_OF_SERVICE_URL = '//k23oj.io.vn/tos/'  # Use a flatpage.
+SITE_LONG_NAME = 'K23OJ: ITK23 Online Judge'
+SITE_ADMIN_EMAIL = 'online_judge@k23oj.io.vn'
+TERMS_OF_SERVICE_URL = None
 
 ## Media files settings.
 # This is the directory where all the media files are stored.
@@ -174,15 +184,15 @@ BAD_MAIL_PROVIDERS = set()
 # Uncomment to change the submission limit.
 #DMOJ_SUBMISSIONS_REJUDGE_LIMIT = 10
 
-## Event server.
+# Event server.
 # Uncomment to enable live updating.
-#EVENT_DAEMON_USE = True
+EVENT_DAEMON_USE = True
 
 # Uncomment this section to use websocket/daemon.js included in the site.
 #EVENT_DAEMON_POST = '<ws:// URL to post to>'
 
 # If you are using the defaults from the guide, it is this:
-#EVENT_DAEMON_POST = 'ws://127.0.0.1:15101/'
+EVENT_DAEMON_POST = 'ws://127.0.0.1:15101/'
 
 # These are the publicly accessed interface configurations.
 # They should match those used by the script.
@@ -191,10 +201,13 @@ BAD_MAIL_PROVIDERS = set()
 #EVENT_DAEMON_POLL = '<public URL to access the HTTP long polling of event server>'
 # i.e. the path to /channels/ exposed by the daemon, through whatever proxy setup you have.
 
-# Using our standard nginx configuration, these should be:
-#EVENT_DAEMON_GET = 'ws://<your domain>/event/'
-#EVENT_DAEMON_GET_SSL = 'wss://<your domain>/event/'  # Optional
-#EVENT_DAEMON_POLL = '/channels/'
+# Using our standard nginx configuration, these should be.
+EVENT_DAEMON_GET = 'ws://k23oj.io.vn/event/'
+EVENT_DAEMON_GET_SSL = 'wss://k23oj.io.vn/event/' # Optional
+EVENT_DAEMON_POLL = 'ws://k23oj.io.vn/poll/'
+# EVENT_DAEMON_GET = 'ws://k23oj.io.vn/event/'
+# EVENT_DAEMON_GET_SSL = 'wss://k23oj.io.vn/event/'  # Optional
+# EVENT_DAEMON_POLL = '/channels/'
 
 # If you would like to use the AMQP-based event server from <https://github.com/DMOJ/event-server>,
 # uncomment this section instead. This is more involved, and recommended to be done
@@ -203,8 +216,8 @@ BAD_MAIL_PROVIDERS = set()
 #EVENT_DAEMON_AMQP_EXCHANGE = '<AMQP exchange to use>'
 
 ## Celery
-#CELERY_BROKER_URL = 'redis://localhost:6379'
-#CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 
 ## CDN control.
 # Base URL for a copy of Ace editor.
@@ -249,11 +262,11 @@ TIMEZONE_MAP = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Blue_M
 
 ## Data download settings.
 # Uncomment to allow users to download their data.
-#DMOJ_USER_DATA_DOWNLOAD = True
+DMOJ_USER_DATA_DOWNLOAD = True
 
 # Directory to cache user data downloads.
 # It is the administrator's responsibility to clean up old files.
-#DMOJ_USER_DATA_CACHE = '/home/dmoj-uwsgi/userdatacache'
+DMOJ_USER_DATA_CACHE = '/home/dmoj-uwsgi/userdatacache'
 
 # Path to use for nginx's X-Accel-Redirect feature.
 # Should be an internal location mapped to the above directory.
@@ -263,11 +276,11 @@ TIMEZONE_MAP = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Blue_M
 #DMOJ_USER_DATA_DOWNLOAD_RATELIMIT = datetime.timedelta(days=1)
 
 # Uncomment to allow contest authors to download contest data
-#DMOJ_CONTEST_DATA_DOWNLOAD = True
+DMOJ_CONTEST_DATA_DOWNLOAD = True
 
 # Directory to cache contest data downloads.
 # It is the administrator's responsibility to clean up old files.
-#DMOJ_CONTEST_DATA_CACHE = '/home/dmoj-uwsgi/contestdatacache'
+DMOJ_CONTEST_DATA_CACHE = '/home/dmoj-uwsgi/contestdatacache'
 
 # Path to use for nginx's X-Accel-Redirect feature.
 # Should be an internal location mapped to the above directory.
@@ -296,7 +309,7 @@ LOGGING = {
         'bridge': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '<desired bridge log path>',
+            'filename': '/home/huythedev/bridge.log',
             'maxBytes': 10 * 1024 * 1024,
             'backupCount': 10,
             'formatter': 'file',
@@ -351,3 +364,90 @@ LOGGING = {
 ## ======== Custom Configuration ========
 # You may add whatever Django configuration you would like here.
 # Do try to keep it separate so you can quickly patch in new settings.
+
+DMOJ_CANONICAL = 'k23oj.io.vn'
+DMOJ_REQUIRE_STAFF_2FA = False
+
+DMOJ_PP_STEP = 0.995
+DMOJ_PP_ENTRIES = 2000
+
+VNOJ_ORG_PP_STEP = 0.995
+VNOJ_ORG_PP_ENTRIES = 2000
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = int(1e6)
+DATA_UPLOAD_MAX_MEMORY_SIZE = None
+FILE_UPLOAD_MAX_MEMORY_SIZE = None
+
+##############################################
+# MATHOID CONFIGURATION (DISABLED: NO SERVER)
+##############################################
+
+MATHOID_URL = False
+MATHOID_GZIP = False
+MATHOID_MML_CACHE = None
+MATHOID_CSS_CACHE = 'default'
+MATHOID_DEFAULT_TYPE = 'auto'
+MATHOID_MML_CACHE_TTL = 86400
+
+# Mathoid local cache directory
+MATHOID_CACHE_ROOT = '/tmp/.cache/mathoid'
+MATHOID_CACHE_URL = False
+
+
+##############################################
+# TEXOID CONFIGURATION (ENABLE SERVER-SIDE LATEX)
+##############################################
+
+TEXOID_URL = 'http://localhost:12346/'
+TEXOID_GZIP = False
+TEXOID_META_CACHE = 'default'
+TEXOID_META_CACHE_TTL = 86400
+
+# Texoid local cache directory (REQUIRED)
+TEXOID_CACHE_ROOT = '/tmp/.cache/texoid'
+TEXOID_CACHE_URL = False
+
+
+##############################################
+# ENABLE LATEX PROCESSOR IN DMOJ
+##############################################
+
+RENDER_LATEX = True
+
+POST_PROCESSORS = {
+    'latex': 'dmoj.post_processors.latex',
+}
+
+############################################
+# Cloudflare R2 – MEDIA
+############################################
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# AWS_ACCESS_KEY_ID = 'your aws access key ID'
+# AWS_SECRET_ACCESS_KEY = 'your aws access key'
+# AWS_STORAGE_BUCKET_NAME = 'your aws bucket name'
+
+# AWS_S3_ENDPOINT_URL = 'your aws endpoint url'
+# AWS_S3_REGION_NAME = 'auto'
+# AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+# AWS_DEFAULT_ACL = None
+# AWS_QUERYSTRING_AUTH = False
+
+# Prefix inside bucket
+# AWS_LOCATION = 'media'
+
+# MEDIA_URL = 'https://cdn.k23oj.io.vn/'
+# VNOJ_ENABLE_API = True
+
+REGISTRATION_OPEN = True
+
+# reCAPTCHA v3 for registration anti-spam.
+# Get keys from https://www.google.com/recaptcha/admin and use score-based v3 keys.
+# RECAPTCHA_V3_SITE_KEY = 'Recaptcha site key'
+# RECAPTCHA_V3_SECRET_KEY = 'Recaptcha secret key'
+# RECAPTCHA_V3_MIN_SCORE = 0.7
+
+# Use recaptcha.net when browsers cannot reach google.com reCAPTCHA endpoints.
+RECAPTCHA_V3_API_DOMAIN = 'www.recaptcha.net'
