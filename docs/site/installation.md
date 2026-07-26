@@ -17,7 +17,7 @@ When asked, you should select the latest MariaDB version.
 
 ```shell-session
 $ apt update
-$ apt install mariadb-server libmysqlclient-dev
+$ apt install mariadb-server default-libmysqlclient-dev
 ```
 
 The next step is to set up the database itself. You should execute the commands listed below to create the necessary database and user.
