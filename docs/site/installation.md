@@ -5,7 +5,7 @@
 ```shell-session
 $ apt update
 $ apt install git gcc g++ make python3-dev python3-pip python3-venv libxml2-dev libxslt1-dev zlib1g-dev gettext curl redis-server pkg-config
-$ curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+$ curl -fsSL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | bash -s 24
 $ apt install nodejs
 ```
 
