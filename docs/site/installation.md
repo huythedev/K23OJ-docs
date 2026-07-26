@@ -55,7 +55,7 @@ Install Python dependencies into the virtual environment.
 (venv) $ pip3 install -r requirements.txt
 ```
 
-Install Node.js packages:
+Install Node.js packages (remember to run `npm audit fix` if needed):
 
 ```shell-session
 (venv) $ npm install
