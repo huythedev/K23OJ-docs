@@ -94,7 +94,7 @@ The K23OJ uses Celery workers to perform most of its heavy lifting, such as batc
 Start up the Redis server, which is needed by the Celery workers.
 
 ```shell-session
-$ service redis-server start
+$ systemctl start redis-server
 ```
 
 Configure `local_settings.py` by uncommenting `CELERY_BROKER_URL` and `CELERY_RESULT_BACKEND`. By default, Redis listens on localhost port 6379, which is reflected in `local_settings.py`. You will need to update the addresses if you changed Redis's settings.
