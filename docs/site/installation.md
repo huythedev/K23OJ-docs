@@ -29,6 +29,13 @@ mariadb> GRANT ALL PRIVILEGES ON dmoj.* TO 'dmoj'@'localhost' IDENTIFIED BY '<ma
 mariadb> exit
 ```
 
+Then, you need to populate the MariaDB timezone tables. It requires proper timezone support for handling contest start/end times and submission timestamps correctly.
+
+```shell-session
+$ mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mariadb -u root mysql
+$ systemctl restart mariadb
+```
+
 ## Installing prerequisites
 
 Now that you are done, you can start installing the site. First, create a virtual environment and activate it. Here, we'll create a virtual environment named `venv`.
