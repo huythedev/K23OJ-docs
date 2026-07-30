@@ -438,7 +438,8 @@ POST_PROCESSORS = {
 # Prefix inside bucket
 # AWS_LOCATION = 'media'
 
-# MEDIA_URL = 'https://cdn.k23oj.io.vn/'
+# MEDIA_URL = 'https://cdn.k23oj.io.vn/media/'
+# PDF_STATEMENT_UPLOAD_URL_PREFIX = 'https://cdn.k23oj.io.vn/media/pdf/'
 # VNOJ_ENABLE_API = True
 
 REGISTRATION_OPEN = True
