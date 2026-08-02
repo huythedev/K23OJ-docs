@@ -452,3 +452,10 @@ REGISTRATION_OPEN = True
 
 # Use recaptcha.net when browsers cannot reach google.com reCAPTCHA endpoints.
 RECAPTCHA_V3_API_DOMAIN = 'www.recaptcha.net'
+FILE_UPLOAD_TEMP_DIR = None
+# Disk workspace for AutoProblem's uploaded package and staged testcase ZIPs.
+# Set this to a directory with enough free space; it must not be a small /tmp tmpfs.
+# AUTOPROBLEM_TEMP_DIR = '/home/huythedev/media/upload_tmp'
+AUTOPROBLEM_UPLOAD_DISK_MULTIPLIER = 2.15
+AUTOPROBLEM_UPLOAD_DISK_RESERVE_BYTES = 1024 * 1024 * 1024
+AUTOPROBLEM_MAX_CONCURRENCY = 10
