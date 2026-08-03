@@ -422,7 +422,14 @@ POST_PROCESSORS = {
 # Cloudflare R2 – MEDIA
 ############################################
 
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STORAGES = {
+#     'default': {
+#         'BACKEND': 'storages.backends.s3.S3Storage',
+#     },
+#     'staticfiles': {
+#         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+#     },
+# }
 
 # AWS_ACCESS_KEY_ID = 'your aws access key ID'
 # AWS_SECRET_ACCESS_KEY = 'your aws access key'
