@@ -59,7 +59,7 @@ Now, fetch the site source code:
 Install Python dependencies into the virtual environment.
 
 ```shell-session
-(venv) $ pip3 install -r requirements.txt
+(venv) $ pip install -r requirements.lock
 ```
 
 Install Node.js packages (remember to run `npm audit fix` if needed):
