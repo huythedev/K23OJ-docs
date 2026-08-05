@@ -447,6 +447,7 @@ POST_PROCESSORS = {
 
 # MEDIA_URL = 'https://cdn.k23oj.io.vn/media/'
 # PDF_STATEMENT_UPLOAD_URL_PREFIX = 'https://cdn.k23oj.io.vn/media/pdf/'
+# MARTOR_UPLOAD_URL_PREFIX = 'https://cdn.k23oj.io.vn/media/martor/'
 # VNOJ_ENABLE_API = True
 
 REGISTRATION_OPEN = True
